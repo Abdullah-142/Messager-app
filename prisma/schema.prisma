@@ -28,6 +28,7 @@ model User {
   messages Message[]
 }
 
+// for social logs
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId
