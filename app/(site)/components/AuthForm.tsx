@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import AuthSocialButton from "./AuthSocialButton";
+import axios from "axios";
 type varient = "Login" | "Register";
 export default function AuthForm() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,10 +33,10 @@ export default function AuthForm() {
   const onsubmit: SubmitHandler<FieldValues> = (data) => {
     setLoading(true);
 
-    if (varient === "Login") {
-      //Axios
-    }
     if (varient === "Register") {
+      axios.post("/api/register", data);
+    }
+    if (varient === "Login") {
       // NextAuth signin
     }
   };
@@ -58,6 +59,7 @@ export default function AuthForm() {
           )}
           <Input
             id="email"
+            type="email"
             lable="Email"
             register={register}
             errors={errors}
@@ -65,6 +67,7 @@ export default function AuthForm() {
           />
           <Input
             id="password"
+            type="password"
             lable="Password"
             register={register}
             errors={errors}
