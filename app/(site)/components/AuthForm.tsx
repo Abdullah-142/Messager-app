@@ -1,15 +1,29 @@
 "use client";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Inputs";
-import { useCallback, useState } from "react";
+import axios from "axios";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { Router } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { BsGithub, BsGoogle } from "react-icons/bs";
 import AuthSocialButton from "./AuthSocialButton";
-import axios from "axios";
+
 type varient = "Login" | "Register";
 export default function AuthForm() {
+  const session = useSession();
+  const route = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [varient, setVarient] = useState<varient>("Login");
+
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      console.log("authenticated");
+      route.push("/users");
+    }
+  });
 
   const toggleVarient = useCallback(() => {
     if (varient === "Login") {
@@ -32,17 +46,45 @@ export default function AuthForm() {
   });
   const onsubmit: SubmitHandler<FieldValues> = (data) => {
     setLoading(true);
-
     if (varient === "Register") {
-      axios.post("/api/register", data);
+      axios
+        .post("/api/register", data)
+        .then(() => signIn("credentials", data))
+        .catch(() => toast.error("Something went wrong"))
+        .finally(() => setLoading(false));
     }
     if (varient === "Login") {
-      // NextAuth signin
+      signIn("credentials", {
+        ...data,
+        redirect: false,
+      })
+        .then((res) => {
+          if (res?.error) {
+            toast.error(res.error);
+          }
+          if (res?.ok && !res.error) {
+            toast.success("Logged in successfully");
+            route.push("/users");
+          }
+        })
+        .finally(() => setLoading(false));
     }
   };
   const sociallinks = (action: string) => {
     setLoading(true);
-    //nextauth social signin
+    signIn(action, {
+      redirect: false,
+    })
+      .then((res) => {
+        if (res?.error) {
+          toast.error(res.error);
+        }
+        if (res?.ok && !res.error) {
+          toast.success("Logged in successfully");
+          route.push("/users");
+        }
+      })
+      .finally(() => setLoading(false));
   };
   return (
     <div className="mt-8 sm:mx-auto px-4 sm:w-full sm:max-w-md">
