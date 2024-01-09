@@ -17,6 +17,7 @@ export default function DesktopSidebar() {
         <ul className="flex flex-col items-center space-y-1" role="list">
           {route.map((item) => (
             <DestopItem
+              key={item.href}
               lable={item.lable}
               icon={item.icon}
               href={item.href}

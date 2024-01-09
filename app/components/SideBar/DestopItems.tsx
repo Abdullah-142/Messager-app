@@ -38,7 +38,7 @@ export default function DestopItem({
         hover:text-black
         hover:bg-gray-100
         `,
-          active && "bg-gray-100 text-black"
+          active && "bg-gray-100 text-slate-950",
         )}
       >
         <Icon className="w-6 h-6 shrink-0" />
