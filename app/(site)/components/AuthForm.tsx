@@ -20,7 +20,6 @@ export default function AuthForm() {
 
   useEffect(() => {
     if (session.status === "authenticated") {
-      console.log("authenticated");
       route.push("/users");
     }
   });
