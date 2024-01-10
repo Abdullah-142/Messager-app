@@ -52,7 +52,7 @@ model Conversation {
   createdAt     DateTime  @default(now())
   lastmessageAt DateTime  @default(now())
   name          String?
-  isGroup       Boolean
+  isGroup       Boolean?
   messageIds    String[]  @db.ObjectId
   messages      Message[]
   userIds       String[]  @db.ObjectId

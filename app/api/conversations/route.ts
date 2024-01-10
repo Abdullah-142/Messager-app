@@ -13,7 +13,7 @@ export async function POST(res: NextResponse) {
       return new NextResponse("Invalid data", { status: 400 });
     }
     if (isGroup) {
-      const newconversation = await prisma?.conversation.create({
+      const newconversations = await prisma?.conversation.create({
         data: {
           name,
           isGroup,
@@ -30,8 +30,45 @@ export async function POST(res: NextResponse) {
           users: true,
         },
       });
-      return NextResponse.json(newconversation);
+      return NextResponse.json(newconversations);
     }
+    const existngConversation = await prisma!.conversation.findMany({
+      where: {
+        OR: [
+          {
+            userIds: {
+              equals: [currentUser.id, userId],
+            },
+          },
+          {
+            userIds: {
+              equals: [userId, currentUser.id],
+            },
+          },
+        ],
+      },
+    });
+    const signleConversation = existngConversation[0];
+    if (signleConversation) {
+      return NextResponse.json(signleConversation);
+    }
+    const newConversation = await prisma!.conversation.create({
+      data: {
+        users: {
+          connect: [
+            {
+              id: currentUser.id,
+            },
+            {
+              id: userId,
+            },
+          ],
+        },
+      },
+      include: {
+        users: true,
+      },
+    });
   } catch (error: any) {
     return new NextResponse("internal error", { status: 500 });
   }

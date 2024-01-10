@@ -16,8 +16,8 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
   const handleClick = useCallback(() => {
     setIsLoaded(true);
     axios
-      .post("/api/conversation", {
-        id: data.id,
+      .post("/api/conversations", {
+        userId: data.id,
       })
       .then((res) => {
         router.push(`/conversation/${res.data.id}`);

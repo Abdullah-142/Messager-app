@@ -15,7 +15,7 @@ const Avatar: React.FC<Props> = ({ user }) => {
           alt="image"
         />
       </div>
-      <span className="absolute block rounded-full bg-green-500 ring-2 ring-white top-0 right-0 md:h-3 md:w-3 h-9 w-9 " />
+      <span className="absolute block rounded-full bg-green-500 ring-2 ring-white top-0 right-0 md:h-3 md:w-3 h-3 w-3 " />
     </div>
   );
 };
