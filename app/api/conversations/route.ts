@@ -69,6 +69,7 @@ export async function POST(res: NextResponse) {
         users: true,
       },
     });
+    return NextResponse.json(newConversation);
   } catch (error: any) {
     return new NextResponse("internal error", { status: 500 });
   }
