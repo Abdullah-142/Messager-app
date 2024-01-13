@@ -7,7 +7,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MessageME",
+  title: "lets Message",
   description: "A simple message app",
 };
 

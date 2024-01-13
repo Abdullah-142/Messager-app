@@ -1,6 +1,6 @@
 import { getCurrentUser } from "./getCurrentuser";
 
-const getConversationById = async (conversationId: string) => {
+export const getConversationById = async (conversationId: string) => {
   const user = await getCurrentUser();
 
   if (!user?.email) {
